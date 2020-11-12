@@ -1,6 +1,6 @@
 package net.atinu.dvalidation.validator
 
-import net.atinu.dvalidation.Validator._
+import net.atinu.dvalidation.Validator.valid
 import net.atinu.dvalidation._
 import net.atinu.dvalidation.errors.{ IsToBigError, IsToSmallError, WrongSizeError }
 

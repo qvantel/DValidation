@@ -21,9 +21,9 @@ class PathSpec extends ValidationSuite {
 
   test("build paths") {
     val vtest = VTest(1, "", None)
-    vtest.validateWith(isEqual(vtest.a, 2) forAttribute 'a forAttribute 'b) should beInvalidWithError(
+    vtest.validateWith(isEqual(vtest.a, 2) forAttribute Symbol("a") forAttribute Symbol("b")) should beInvalidWithError(
       CustomValidationError(1, "error.dvalidation.isequal", args = "2")
-        .nestAttribute('a).nestAttribute('b))
+        .nestAttribute(Symbol("a")).nestAttribute(Symbol("b")))
   }
 
 }
