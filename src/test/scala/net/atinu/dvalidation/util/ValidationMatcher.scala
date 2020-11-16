@@ -53,7 +53,7 @@ trait ValidationMatcher {
     override def apply(validation: DValidation[_]): MatchResult = {
       if (values.isEmpty) fail("expected at least one expected error in test")
       else {
-        val valuesList: NonEmptyList[DomainError] = NonEmptyList.apply(values.head, values.tail: _*)
+        val valuesList: NonEmptyList[DomainError] = NonEmptyList.fromSeq(values.head, values.tail)
         matchValidations(validation, valuesList)
       }
     }

@@ -25,8 +25,8 @@ object LawTest extends Properties("DomainErrors") {
 
   implicit val desArb = Arbitrary(desGen)
 
-  semigroup.laws[DomainErrors].check
+  semigroup.laws[DomainErrors].check(_)
 
-  equal.laws[DomainErrors].check
+  equal.laws[DomainErrors].check(_)
 
 }

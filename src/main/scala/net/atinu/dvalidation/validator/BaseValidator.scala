@@ -76,7 +76,7 @@ trait BaseValidator extends ValidatorBase {
    * @return if parameter is Some(a) then a will be validated otherwise scalaz.Success(a)
    */
   def validOpt[T](a: Option[T])(v: DValidator[T]): DValidation[Option[T]] = {
-    validateOptBase(a, v, None.valid)
+    validateOptBase(a, v, Option.empty[T].valid)
   }
 
   /**

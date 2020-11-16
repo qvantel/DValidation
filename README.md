@@ -25,12 +25,12 @@ DValidation is available via the Sonatype OSS repository:
 resolvers += Resolver.sonatypeRepo("releases")
 ```
 
-The current release targets the Scala 2.10.x and 2.11.x series together with
-scalaz 7.0.6 or 7.1.0.
+The current release targets the Scala 2.11.x, 2.12.x and 2.13.x series together with
+scalaz 7.3.2.
 
 ```
-libraryDependencies += "net.atinu" %% "dvalidation" % "0.2"
-libraryDependencies += "org.scalaz" %% "scalaz-core" % "7.1.0"
+libraryDependencies += "net.atinu" %% "dvalidation" % "0.4"
+libraryDependencies += "org.scalaz" %% "scalaz-core" % "7.3.2"
 ```
 ## Basic Usage
 Lets start with this simple domain model: 
@@ -56,9 +56,9 @@ val mikael = Musician("Mikael Åkerfeldt", 40, List(Guitar, BassGuitar))
 val martin = Musician("Martin Mendez", 17, List(BassGuitar))
 
 val res: DValidation[Musician] = mikael.validateWith(
-  notBlank(mikael.name) forAttribute 'name,
-  ensure(mikael.age)("error.dvalidation.legalage", 18)(_ > 18) forAttribute 'age,
-  hasElements(mikael.instruments) forAttribute 'instruments
+  notBlank(mikael.name) forAttribute "name",
+  ensure(mikael.age)("error.dvalidation.legalage", 18)(_ > 18) forAttribute "age",
+  hasElements(mikael.instruments) forAttribute "instruments"
 )
 ```
 
@@ -81,9 +81,9 @@ defined as follows:
 ```scala
 val musicianValidator: DValidator[Musician] = Validator.template[Musician] { musician =>
   musician.validateWith(
-  notBlank(musician.name) forAttribute 'name,
-  ensure(musician.age)(key = "error.dvalidation.legalage", args = 18)(_ > 18) forAttribute 'age,
-  hasElements(musician.instruments) forAttribute 'instruments
+  notBlank(musician.name) forAttribute "name",
+  ensure(musician.age)(key = "error.dvalidation.legalage", args = 18)(_ > 18) forAttribute "age",
+  hasElements(musician.instruments) forAttribute "instruments"
  )
 }
 musicianValidator(mikael)
@@ -108,11 +108,11 @@ val stringInstrumentValidator = Validator.template[Instrument](i =>
 )
 
 max.validateWith(
-  notBlank(max.name) forAttribute 'name,
-  ensure(max.age)("error.dvalidation.legalage", 18)(_ > 18) forAttribute 'age,
-  hasElements(max.instruments) forAttribute 'instruments
+  notBlank(max.name) forAttribute "name",
+  ensure(max.age)("error.dvalidation.legalage", 18)(_ > 18) forAttribute "age",
+  hasElements(max.instruments) forAttribute "instruments"
 ).withValidations(
-  validSequence(max.instruments, stringInstrumentValidator) forAttribute 'instruments
+  validSequence(max.instruments, stringInstrumentValidator) forAttribute "instruments"
 )
 ```
 
@@ -210,9 +210,9 @@ val musicianValidatorApplicative = Validator.template[Musician] { musician =>
       .flatMap(value => hasElements(value).disjunction).validation
   val hasLegalAge = ensure(musician.age)(key = "error.dvalidation.legalage", args = 18)(_ > 18)
 
-  ((notBlank(musician.name) forAttribute 'name) |@|
-   (hasLegalAge forAttribute 'age) |@|
-   (atLeastOneString forAttribute 'instruments))(Musician.apply)
+  ((notBlank(musician.name) forAttribute "name") |@|
+   (hasLegalAge forAttribute "age") |@|
+   (atLeastOneString forAttribute "instruments"))(Musician.apply)
 }
 ```
 

@@ -1,8 +1,7 @@
 package net.atinu.dvalidation
 
 import net.atinu.dvalidation.Path.PathString
-
-import scalaz.{ Show, Equal, Semigroup }
+import scalaz.{ Cord, Equal, Semigroup, Show }
 
 object DomainError {
 
@@ -19,6 +18,7 @@ object DomainError {
 
   implicit def domainErrorInstances =
     new Equal[DomainError] with Show[DomainError] {
+      override def show(f: DomainError): Cord = Cord(f.toString)
       override def shows(f: DomainError) = f.toString
 
       def equal(a1: DomainError, a2: DomainError): Boolean = a1 == a2

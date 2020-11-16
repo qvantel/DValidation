@@ -1,13 +1,14 @@
 package net.atinu.dvalidation
 
 import scala.reflect.ClassTag
-import scalaz.{ Show, Equal, Semigroup, NonEmptyList }
+
+import scalaz.{ Cord, Equal, IList, NonEmptyList, Semigroup, Show }
 
 object DomainErrors {
 
-  def apply[A <: DomainError](h: A, t: A*) = new DomainErrors(NonEmptyList(h, t: _*))
+  def apply[A <: DomainError](h: A, t: A*) = new DomainErrors(NonEmptyList.nel(h, IList.fromList(t.toList)))
 
-  def withSingleError(error: DomainError) = new DomainErrors(NonEmptyList.apply(error))
+  def withSingleError(error: DomainError) = new DomainErrors(NonEmptyList.nel(error, IList.empty))
 
   def withErrors(errors: DomainError*) =
     if (errors.isEmpty) throw new IllegalArgumentException("DomainErrors depend on at least one DomainError")
@@ -20,6 +21,7 @@ object DomainErrors {
 
   implicit def domainErrorsInstances =
     new Semigroup[DomainErrors] with Equal[DomainErrors] with Show[DomainErrors] {
+      override def show(f: DomainErrors): Cord = Cord(f.toString)
       override def shows(f: DomainErrors) = f.toString
 
       def append(f1: DomainErrors, f2: => DomainErrors): DomainErrors = {

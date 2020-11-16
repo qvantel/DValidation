@@ -26,7 +26,7 @@ class ConverterSpec extends ValidationSuite {
   }
 
   test("DValidation can be seen as scalaz.ValidationNel") {
-    val error = DomainErrors.withSingleError(new IsNoneError()).failure
+    val error: Validation[DomainErrors, Any] = DomainErrors.withSingleError(new IsNoneError()).failure
     error.asValidationNel should equal(Failure(NonEmptyList.apply(new IsNoneError())))
   }
 

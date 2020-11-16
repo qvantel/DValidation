@@ -2,47 +2,39 @@ import sbt._
 
 name := "dvalidation"
 
-organization := "net.atinu"
+organization := "com.qvantel"
 
-version := "0.3"
+version := "0.4"
 
-scalaVersion := "2.12.8"
+scalaVersion := "2.13.3"
 
 scalacOptions  ++= Seq("-unchecked", "-deprecation", "-feature")
 
-crossScalaVersions := Seq("2.11.12", "2.12.8")
+crossScalaVersions := Seq("2.11.12", "2.12.12", "2.13.3")
 
 resolvers ++= Seq(
   Resolver.sonatypeRepo("releases")
 )
 
-val scalazVersion = "7.2.21"
+val scalazVersion = "7.3.2"
 
 libraryDependencies += "org.scalaz" %% "scalaz-core" % scalazVersion % "provided"
 
 libraryDependencies += "org.scalaz" %% "scalaz-scalacheck-binding" % scalazVersion % "test"
 
-libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % "test"
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.8" % "test"
 
-//publishMavenStyle := true
-
-//publishTo := {
-//  val nexus = "https://oss.sonatype.org/"
-//  if (isSnapshot.value)
-//    Some("snapshots" at nexus + "content/repositories/snapshots")
-//  else
-//    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
-//}
+publishMavenStyle := true
 
 publishTo := {
-  val artifactory = "https://artifactory.qvantel.net/artifactory/"
+  val nexus = "https://oss.sonatype.org/"
   if (isSnapshot.value)
-    Some("snapshots" at artifactory + "libs-snapshot-local")
+    Some("snapshots" at nexus + "content/repositories/snapshots")
   else
-    Some("releases" at artifactory + "libs-release-local")
+    Some("releases" at nexus + "service/local/staging/deploy/maven2")
 }
 
-pomExtra := <url>https://github.com/tobnee/DValidation</url>
+pomExtra := <url>https://github.com/qvantel/DValidation</url>
   <licenses>
     <license>
       <name>Apache 2 license</name>
@@ -51,8 +43,8 @@ pomExtra := <url>https://github.com/tobnee/DValidation</url>
     </license>
   </licenses>
   <scm>
-    <url>git@github.com:tobnee/DValidation.git</url>
-    <connection>scm:git:git@github.com:tobnee/DValidation.git</connection>
+    <url>git@github.com:qvantel/DValidation.git</url>
+    <connection>scm:git:git@github.com:qvantel/DValidation.git</connection>
   </scm>
   <developers>
     <developer>

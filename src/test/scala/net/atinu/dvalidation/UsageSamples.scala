@@ -30,19 +30,17 @@ object UsageSamples extends App {
   val martin = Musician("Martin Mendez", 17, List(BassGuitar))
 
   val res: DValidation[Musician] = mikael.validateWith(
-    notBlank(mikael.name) forAttribute 'name,
-    ensure(mikael.age)("error.dvalidation.legalage", 18)(_ > 18) forAttribute 'age,
-    hasElements(mikael.instruments) forAttribute 'instruments
-  )
+    notBlank(mikael.name) forAttribute Symbol("name"),
+    ensure(mikael.age)("error.dvalidation.legalage", 18)(_ > 18) forAttribute Symbol("age"),
+    hasElements(mikael.instruments) forAttribute Symbol("instruments"))
   // => Success(User(Mikael Åkerfeldt,40))
 
   // Validation Templates
   val musicianValidator: DValidator[Musician] = Validator.template[Musician] { musician =>
     musician.validateWith(
-      notBlank(musician.name) forAttribute 'name,
-      ensure(musician.age)(key = "error.dvalidation.legalage", args = 18)(_ > 18) forAttribute 'age,
-      hasElements(musician.instruments) forAttribute 'instruments
-    )
+      notBlank(musician.name) forAttribute Symbol("name"),
+      ensure(musician.age)(key = "error.dvalidation.legalage", args = 18)(_ > 18) forAttribute Symbol("age"),
+      hasElements(musician.instruments) forAttribute Symbol("instruments"))
   }
   musicianValidator(mikael)
   // => Success(User(Mikael Åkerfeldt,40))
@@ -57,12 +55,10 @@ object UsageSamples extends App {
   )
 
   max.validateWith(
-    notBlank(max.name) forAttribute 'name,
-    ensure(max.age)("error.dvalidation.legalage", 18)(_ > 18) forAttribute 'age,
-    hasElements(max.instruments) forAttribute 'instruments
-  ).withValidations(
-      validSequence(max.instruments, stringInstrumentValidator) forAttribute 'instruments
-    )
+    notBlank(max.name) forAttribute Symbol("name"),
+    ensure(max.age)("error.dvalidation.legalage", 18)(_ > 18) forAttribute Symbol("age"),
+    hasElements(max.instruments) forAttribute Symbol("instruments")).withValidations(
+      validSequence(max.instruments, stringInstrumentValidator) forAttribute Symbol("instruments"))
   // => Failure(DomainError(path: /instruments/[0], value: Piano, msgKey: error.dvalidation.stringinstrument, args: Keyboard))
 
   // applicative validation
@@ -74,9 +70,9 @@ object UsageSamples extends App {
       .flatMap(value => hasElements(value).disjunction).validation
     val legalAge = ensure(musician.age)(key = "error.dvalidation.legalage", args = 18)(_ > 18)
 
-    ((notBlank(musician.name) forAttribute 'name) |@|
-      (legalAge forAttribute 'age) |@|
-      (atLeastOneString forAttribute 'instruments))(Musician.apply)
+    ((notBlank(musician.name) forAttribute Symbol("name")) |@|
+      (legalAge forAttribute Symbol("age")) |@|
+      (atLeastOneString forAttribute Symbol("instruments")))(Musician.apply)
   }
 
   // Standard Library Conversion
